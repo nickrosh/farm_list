@@ -21,14 +21,14 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/api/todo")
+@app.get("/api/todo", response_model=list[model.Todo])
 async def get_todo():
     response = await database.fetch_all_todos()
     return response
 
 
 @app.get("/api/todo/{title}", response_model=model.Todo)
-async def get_todo_by_id(title):
+async def get_todo_by_id(title: str):
     response = await database.fetch_one_todo(title)
     if response:
         return response
@@ -39,7 +39,7 @@ async def get_todo_by_id(title):
         )
 
 
-@app.post("/api/todo", response_model=model.Todo)
+@app.post("/api/todo", response_model=model.Todo, status_code=status.HTTP_201_CREATED)
 async def post_todo(todo: model.Todo):
     response = await database.create_todo(todo.dict())
     if response:
@@ -64,7 +64,7 @@ async def put_todo(title: str, description: str):
 
 
 @app.delete("/api/todo/{title}")
-async def delete_todo(title):
+async def delete_todo(title: str):
     response = await database.delete_todo(title)
     if response:
         return "Success deleted Todo Item"
@@ -73,3 +73,4 @@ async def delete_todo(title):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f'there is no item with title: {title}'
         )
+        
