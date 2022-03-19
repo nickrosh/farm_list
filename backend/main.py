@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from backend import database, model
 
@@ -43,7 +45,8 @@ async def get_todo_by_id(title: str):
 async def post_todo(todo: model.Todo):
     response = await database.create_todo(todo.dict())
     if response:
-        return response
+        # for some reason, return response would not work
+        return todo.dict()
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

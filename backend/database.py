@@ -8,7 +8,7 @@ collection = database.todo
 
 
 async def fetch_one_todo(title):
-    document = collection.find_one({"title":title})
+    document = await collection.find_one({"title":title})
     return document
 
 
