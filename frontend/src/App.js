@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import TodoView from './components/TodoListView';
 
 function App() {
 
@@ -15,7 +16,7 @@ function App() {
       .then(res => {
         setTodoList(res.data)
       })
-  })
+  }, [])
 
   //Post a Todo
   const addTodoHandler = () => {
@@ -35,13 +36,17 @@ function App() {
       <div className="card-body">
         <h5 className="card text-white bg-dark mb-3">Add your Task</h5>
         <span className="card-text">
-          <input type="text" className="mb-2 form-control titleIn" placeholder='Title' onChange={event => setTitle(event.target.value)}/>
-          <input type="text" className="mb-2 form-control desIn" placeholder='Description' onChange={event => setDesc(event.target.value)}/>
-          <button className="btn btn-outline-primary mx-2 mb-4" style={{'borderRadius': '50px', "font-weight": "bold"}} onClick={addTodoHandler}>Add Task</button>
+          <input type="text" className="mb-2 form-control titleIn" 
+            placeholder='Title' onChange={event => setTitle(event.target.value)}/>
+          <input type="text" className="mb-2 form-control desIn" 
+            placeholder='Description' onChange={event => setDesc(event.target.value)}/>
+          <button className="btn btn-outline-primary mx-2 mb-4" 
+            style={{'borderRadius': '50px', "font-weight": "bold"}} 
+            onClick={addTodoHandler}>Add Task</button>
         </span>
         <h5 className="card text-white bg-dark mb-3">Your Tasks</h5>
         <div className="">
-          {/* Need Components Here */}
+          <TodoView todoList={todoList} />
         </div>
 
       </div>
