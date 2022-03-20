@@ -6,17 +6,25 @@ import TodoView from './components/TodoListView';
 
 function App() {
 
-  const [todoList, setTodoList] = useState([{}])
+  const [todoList, setTodoList] = useState([])
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
 
   // Read all Todos
   useEffect(() => {
-    axios.get('http://localhost:8000/api/todo')
-      .then(res => {
-        setTodoList(res.data)
-      })
+    const getTodos = async () => {
+      const todosFromServer = await fetchTodos()
+      setTodoList(todosFromServer)
+    }
+    getTodos()
   }, [])
+
+  const fetchTodos = async () => {
+    const res = await fetch('http://localhost:8000/api/todo')
+    const data = await res.json()
+
+    return data
+  }
 
   //Post a Todo
   const addTodoHandler = () => {
@@ -24,6 +32,7 @@ function App() {
       'http://localhost:8000/api/todo', {'title': title, 'description': desc}
       )
       .then(res => console.log(res))
+
 
   }
 
